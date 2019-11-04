@@ -3,4 +3,3 @@ unlock kinetis
 loadfile ../../build/ksdk1.1/work/demos/Warp/armgcc/Warp/release/Warp.srec
 r
 go
-
