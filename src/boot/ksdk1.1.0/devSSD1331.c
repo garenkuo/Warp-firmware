@@ -141,18 +141,6 @@ devSSD1331init(void)
 	writeCommand(kSSD1331CommandFILL);
 	writeCommand(0x01);
 
-	writeCommand(kSSD1331CommandDRAWRECT);
-	writeCommand(0x03);
-	writeCommand(0x02);
-	writeCommand(0x12);
-	writeCommand(0x15);
-	writeCommand(0x28);
-	writeCommand(0x0);
-	writeCommand(0x0);
-	writeCommand(0x0);
-	writeCommand(0x0);
-	writeCommand(0x40);
-
 	/*
 	 *	Clear Screen
 	 */
@@ -169,6 +157,17 @@ devSSD1331init(void)
 	 */
 	//...
 
+	writeCommand(kSSD1331CommandDRAWRECT);
+	writeCommand(0x03);
+	writeCommand(0x02);
+	writeCommand(0x12);
+	writeCommand(0x15);
+	writeCommand(0x28);
+	writeCommand(0x0);
+	writeCommand(0x0);
+	writeCommand(0x0);
+	writeCommand(0x0);
+	writeCommand(0x40);
 
 
 	return 0;
