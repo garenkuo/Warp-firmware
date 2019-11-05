@@ -165,13 +165,13 @@ devSSD1331init(void)
 	writeCommand(0x5a);
 	writeCommand(0x3f);
 	// color of line
-	writeCommand(0x28);
 	writeCommand(0x0);
+	writeCommand(0xff);
 	writeCommand(0x0);
 	// color of fill
 	writeCommand(0x0);
+	writeCommand(0xff);
 	writeCommand(0x0);
-	writeCommand(0x40);
 
 
 	return 0;
