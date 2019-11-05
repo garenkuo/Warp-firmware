@@ -159,10 +159,10 @@ devSSD1331init(void)
 
 	writeCommand(kSSD1331CommandDRAWRECT);
 	// start row, col
-	writeCommand(0x03);
-	writeCommand(0x02);
+	writeCommand(0x0);
+	writeCommand(0x0);
 	// end row, col
-	writeCommand(0x5a);
+	writeCommand(0x5f);
 	writeCommand(0x3f);
 	// color of line
 	writeCommand(0x0);
