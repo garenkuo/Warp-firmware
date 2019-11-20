@@ -1,4 +1,4 @@
-# Install script for directory: /Volumes/doos/bare-metal-arm-git-clone/KSDK_1.1.0/lib/ksdk_platform_lib/armgcc/KL03Z4
+# Install script for directory: /home/kg472/Warp-firmware/build/ksdk1.1/work/lib/ksdk_platform_lib/armgcc/KL03Z4
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -35,5 +35,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Volumes/doos/bare-metal-arm-git-clone/KSDK_1.1.0/lib/ksdk_platform_lib/armgcc/KL03Z4/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/kg472/Warp-firmware/build/ksdk1.1/work/lib/ksdk_platform_lib/armgcc/KL03Z4/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
