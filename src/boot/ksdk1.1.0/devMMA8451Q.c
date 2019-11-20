@@ -52,6 +52,7 @@
 
 
 extern volatile WarpI2CDeviceState	deviceMMA8451QState;
+extern volatile WarpI2CDeviceState	deviceINA219State;
 extern volatile uint32_t		gWarpI2cBaudRateKbps;
 extern volatile uint32_t		gWarpI2cTimeoutMilliseconds;
 extern volatile uint32_t		gWarpSupplySettlingDelayMilliseconds;
