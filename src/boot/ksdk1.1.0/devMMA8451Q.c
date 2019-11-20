@@ -432,15 +432,18 @@ printSensorCurrentINA219(bool hexModeFlag)
 	int16_t		readSensorRegisterValueCombined;
 	WarpStatus	i2cReadStatus;
 
+	writeSensorRegisterINA219(0x05 /* register address F_SETUP */,
+							4096 /* payload */,
+							menuI2cPullupValue);
 	i2cReadStatus = readSensorRegisterINA219(0x05 /* INA219 current register */, 2 /* numberOfBytes */);
 	readSensorRegisterValueMSB = deviceINA219State.i2cBuffer[0];
 	readSensorRegisterValueLSB = deviceINA219State.i2cBuffer[1];
-	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 6) | (readSensorRegisterValueLSB >> 2);
+	readSensorRegisterValueCombined = ((readSensorRegisterValueMSB & 0xFF) << 8) | (readSensorRegisterValueLSB);
 
 	/*
 	 *	Sign extend the 14-bit value based on knowledge that upper 2 bit are 0:
 	 */
-	readSensorRegisterValueCombined = (readSensorRegisterValueCombined ^ (1 << 13)) - (1 << 13);
+	// readSensorRegisterValueCombined = (readSensorRegisterValueCombined ^ (1 << 13)) - (1 << 13);
 	// readSensorRegisterValueCombined = readSensorRegisterValueCombined / 10;
 
 
