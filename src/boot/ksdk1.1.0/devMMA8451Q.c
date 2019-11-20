@@ -345,7 +345,7 @@ writeSensorRegisterINA219(uint8_t deviceRegister, uint8_t payload, uint16_t menu
 							commandByte,
 							1,
 							payloadByte,
-							1,
+							2,
 							gWarpI2cTimeoutMilliseconds);
 	if (status != kStatus_I2C_Success)
 	{
