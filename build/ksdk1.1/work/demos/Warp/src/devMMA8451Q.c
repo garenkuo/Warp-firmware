@@ -396,8 +396,8 @@ readSensorRegisterINA219(uint8_t deviceRegister, int numberOfBytes)
 WarpStatus
 readSensorCurrentRegisterINA219()
 {	// Create variables
-    uint8_t 		payloadBuf[2]        = {0xFF, 0xFF};
-	uint8_t 		cmdBuf[1]			 = {0xFF};
+    uint8_t 		payloadBuf[2] = {0xFF, 0xFF};
+	uint8_t 		cmdBuf[1];
 	i2c_status_t	status;
 
 	i2c_device_t slave =
@@ -434,9 +434,12 @@ readSensorCurrentRegisterINA219()
 	                                          1,
 	                                          payloadBuf,
 	                                          2,    /* number of bytes */
-	                                          100);
-
-	SEGGER_RTT_printf(0, "INA219 Configuration Register Set");
+	                                          gWarpI2cTimeoutMilliseconds);
+	if (status != kStatus_I2C_Success)
+	{
+		return kWarpStatusDeviceCommunicationFailed;
+	}
+	SEGGER_RTT_WriteString(0, "INA219 Configuration Register Set");
 
 	// Set calibration register
 	cmdBuf[0] = 0x05;
@@ -445,15 +448,14 @@ readSensorCurrentRegisterINA219()
 	payloadBuf[1] = 0x00;
 
 	status = I2C_DRV_MasterSendDataBlocking(
-                                                      0 /* I2C peripheral instance */,
-                                                      &slave,
-                                                      cmdBuf,
-                                                      1,
-                                                      payloadBuf,
-                                                      2,
-                                                      100 /* number of bytes */);
+          0 /* I2C peripheral instance */,
+          &slave,
+          cmdBuf,
+          1,
+          payloadBuf,
+          2,
+          gWarpI2cTimeoutMilliseconds);
 
-    OSA_TimeDelay(100);
 	SEGGER_RTT_WriteString(0, "INA219 calibration register set");
 	// From datasheet - To change the register pointer for a read operation,
 	// a new value must be written to the register pointer.
@@ -462,7 +464,6 @@ readSensorCurrentRegisterINA219()
 	payloadBuf[0] = 0x01;
 	payloadBuf[1] = 0x01;
 
-
 	status = I2C_DRV_MasterSendDataBlocking(
 		0,
 		&slave,
@@ -470,8 +471,7 @@ readSensorCurrentRegisterINA219()
 		1,
 		payloadBuf,
 		0,
-		100);
-
+		gWarpI2cTimeoutMilliseconds);
 
 	SEGGER_RTT_WriteString(0, "Reading current 10 times");
 	cmdBuf[0] = 0x04; // Current register
