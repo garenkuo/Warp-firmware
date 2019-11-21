@@ -1043,6 +1043,8 @@ warp.h
 /home/kg472/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c
 stdlib.h
 -
+stdio.h
+-
 fsl_misc_utilities.h
 /home/kg472/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/fsl_misc_utilities.h
 fsl_device_registers.h
