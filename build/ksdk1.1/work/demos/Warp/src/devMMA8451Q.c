@@ -489,7 +489,7 @@ readSensorCurrentRegisterINA219()
 			2, /* number of bytes */
 			500 /* timeout in milliseconds */);
 		currentDecimal = ((deviceINA219State.i2cBuffer[0] << 8) | (deviceINA219State.i2cBuffer[1]))/10;
-		SEGGER_RTT_printf(0, "\n\r %02x%02x", deviceINA219State.i2cBuffer[0], deviceINA219State.i2cBuffer[1]);
+		// SEGGER_RTT_printf(0, "\n\r %02x%02x", deviceINA219State.i2cBuffer[0], deviceINA219State.i2cBuffer[1]);
 		SEGGER_RTT_printf(0, "\n\r %d", currentDecimal);
 
 		// FILE *fp;
