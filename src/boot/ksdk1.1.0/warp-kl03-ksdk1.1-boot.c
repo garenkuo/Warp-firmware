@@ -2663,6 +2663,7 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag, int menuDelay
 		#endif
 		#ifdef WARP_BUILD_ENABLE_DEVMMA8451Q
 		printSensorDataMMA8451Q(hexModeFlag);
+		#endif
 		#ifdef WARP_BUILD_ENABLE_DEVINA219
 		printSensorCurrentINA219(hexModeFlag);
 		#endif
