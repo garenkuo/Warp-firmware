@@ -1353,7 +1353,7 @@ main(void)
 	/* Start reading current */
 	// readSensorCurrentRegisterINA219();
 	enableI2Cpins(menuI2cPullupValue);
-	WarpStatus newvar1 = readSensorRegisterINA219();
+	WarpStatus newvar1 = readSensorCurrentRegisterINA219();
 	disableI2Cpins();
 
 	while (1)
