@@ -361,9 +361,9 @@ configureSensorINA219(uint16_t menuI2cPullupValue)
 {
 	WarpStatus	i2cWriteStatus1, i2cWriteStatus2;
 	/* calibration register - no overflow */
-	// i2cWriteStatus1 = writeSensorRegisterINA219(0x05 /* register address F_SETUP */,
-	// 						4096 /* payload */,
-	// 						menuI2cPullupValue);
+	i2cWriteStatus1 = writeSensorRegisterINA219(0x05 /* register address F_SETUP */,
+							4096 /* payload */,
+							menuI2cPullupValue);
 
 	/* configuration register */
 	i2cWriteStatus2 = writeSensorRegisterINA219(0x00 /* register address CTRL_REG1 */,
@@ -432,9 +432,9 @@ printSensorCurrentINA219(bool hexModeFlag)
 	int16_t		readSensorRegisterValueCombined;
 	WarpStatus	i2cReadStatus;
 
-	writeSensorRegisterINA219(0x05 /* register address F_SETUP */,
-							4096 /* payload */,
-							menuI2cPullupValue);
+	// writeSensorRegisterINA219(0x05 /* register address F_SETUP */,
+	// 						4096 /* payload */,
+	// 						menuI2cPullupValue);
 	i2cReadStatus = readSensorRegisterINA219(0x05 /* INA219 current register */, 2 /* numberOfBytes */);
 	readSensorRegisterValueMSB = deviceINA219State.i2cBuffer[0];
 	readSensorRegisterValueLSB = deviceINA219State.i2cBuffer[1];
