@@ -35,6 +35,7 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "fsl_misc_utilities.h"
 #include "fsl_device_registers.h"
