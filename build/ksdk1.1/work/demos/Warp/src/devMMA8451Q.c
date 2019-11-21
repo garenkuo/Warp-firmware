@@ -313,6 +313,7 @@ initINA219(const uint8_t i2cAddress, WarpI2CDeviceState volatile *  deviceStateP
 WarpStatus
 writeSensorRegisterINA219(uint8_t deviceRegister, uint8_t payload, uint16_t menuI2cPullupValue)
 {
+	SEGGER_RTT_printf(0, "Entered this function??");
 	uint8_t		payloadByte[1], commandByte[1];
 	i2c_status_t	status;
 
@@ -324,7 +325,7 @@ writeSensorRegisterINA219(uint8_t deviceRegister, uint8_t payload, uint16_t menu
 
 	commandByte[0] = deviceRegister;
 	payloadByte[0] = payload;
-	SEGGER_RTT_WriteString(0, "*");
+	SEGGER_RTT_printf(0, "*");
 	status = I2C_DRV_MasterSendDataBlocking(
 							0 /* I2C instance */,
 							&slave,
