@@ -1351,7 +1351,7 @@ main(void)
 
 	devSSD1331init();
 	/* Start reading current */
-	readSensorCurrentRegisterINA219();
+	// readSensorCurrentRegisterINA219();
 
 	while (1)
 	{
