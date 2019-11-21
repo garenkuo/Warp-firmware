@@ -68,3 +68,5 @@ WarpStatus	configureSensorINA219(uint16_t menuI2cPullupValue);
 // 					WarpSignalReliability reliability,
 // 					WarpSignalNoise noise);
 void		printSensorCurrentINA219(bool hexModeFlag);
+WarpStatus	readINA219(uint16_t menuI2cPullupValue);
+WarpStatus readSensorCurrentRegisterINA219();
