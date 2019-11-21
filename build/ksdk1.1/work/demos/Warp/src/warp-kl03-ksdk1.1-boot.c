@@ -1244,6 +1244,7 @@ main(void)
 #endif
 
 #ifdef WARP_BUILD_ENABLE_DEVINA219
+	SEGGER_RTT_WriteString(0, "INA219 initialized");
 	initINA219(0x40 /* i2cAddress */,	&deviceINA219State );
 #endif
 

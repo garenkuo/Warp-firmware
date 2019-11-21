@@ -402,7 +402,7 @@ readSensorCurrentRegisterINA219()
 		.address = deviceINA219State.i2cAddress,
 		.baudRate_kbps = gWarpI2cBaudRateKbps
 	};
-	SEGGER_RTT_WriteString(0, "Set I2C parameters");
+	SEGGER_RTT_WriteString(0, "Here 1");
 	/* configure device */
 
 	// WarpStatus	i2cWriteStatus1, i2cWriteStatus2;
@@ -421,6 +421,8 @@ readSensorCurrentRegisterINA219()
 	payloadBuf[0] = 0xFF;
     payloadBuf[1] = 0xFF;
     cmdBuf[0] = 0x00;
+
+	SEGGER_RTT_WriteString(0, "Here 2");
 
     status = I2C_DRV_MasterSendDataBlocking(
 	                                          0,  /* I2C peripheral instance */
