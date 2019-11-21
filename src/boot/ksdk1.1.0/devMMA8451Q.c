@@ -476,7 +476,7 @@ readSensorCurrentRegisterINA219()
 	fprintf(fp, "%s %s %s %d", "We", "are", "in", 2012);
 
 	fclose(fp);
-	SEGGER_RTT_printf("file.txt created!");
+	SEGGER_RTT_printf(0, "file.txt created!");
 	for(int i = 0; i < 20; i++){
     	status = I2C_DRV_MasterReceiveDataBlocking(
 			0 /* I2C peripheral instance */,
