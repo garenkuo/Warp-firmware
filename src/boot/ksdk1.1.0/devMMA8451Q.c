@@ -469,6 +469,14 @@ readSensorCurrentRegisterINA219()
 
 	SEGGER_RTT_printf(0, "Reading current 100 times");
 	cmdBuf[0] = 0x04; // Current register
+	SEGGER_RTT_printf(0, "file test");
+	FILE * fp;
+
+	fp = fopen ("file.txt", "w+");
+	fprintf(fp, "%s %s %s %d", "We", "are", "in", 2012);
+
+	fclose(fp);
+	SEGGER_RTT_printf("file.txt created!")
 	for(int i = 0; i < 20; i++){
     	status = I2C_DRV_MasterReceiveDataBlocking(
 			0 /* I2C peripheral instance */,
