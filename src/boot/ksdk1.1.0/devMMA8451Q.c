@@ -361,9 +361,9 @@ configureSensorINA219(uint16_t menuI2cPullupValue)
 {
 	WarpStatus	i2cWriteStatus1, i2cWriteStatus2;
 	/* calibration register - no overflow */
-	i2cWriteStatus1 = writeSensorRegisterINA219(0x05 /* register address F_SETUP */,
-							4096 /* payload */,
-							menuI2cPullupValue);
+	// i2cWriteStatus1 = writeSensorRegisterINA219(0x05 /* register address F_SETUP */,
+	// 						4096 /* payload */,
+	// 						menuI2cPullupValue);
 
 	/* configuration register */
 	i2cWriteStatus2 = writeSensorRegisterINA219(0x00 /* register address CTRL_REG1 */,
