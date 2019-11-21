@@ -469,8 +469,6 @@ readSensorCurrentRegisterINA219()
 
 	SEGGER_RTT_printf(0, "Reading current 100 times");
 	cmdBuf[0] = 0x04; // Current register
-	FILE *fp;
-	fp=fopen("INA219CurrentValues.csv","w+");
 	for(int i = 0; i < 20; i++){
     	status = I2C_DRV_MasterReceiveDataBlocking(
 			0 /* I2C peripheral instance */,
@@ -483,7 +481,6 @@ readSensorCurrentRegisterINA219()
 		currentDecimal = ((deviceINA219State.i2cBuffer[0] << 8) | (deviceINA219State.i2cBuffer[1]))/10;
 		SEGGER_RTT_printf(0, "\n\r %02x%02x", deviceINA219State.i2cBuffer[0], deviceINA219State.i2cBuffer[1]);
 		SEGGER_RTT_printf(0, "\n\r %d", currentDecimal);
-		fprintf(fp,"\n%d", currentDecimal);
 
 		// FILE *fp;
 		// int i, count, id, micro, dcn, ds, rd;
@@ -502,7 +499,6 @@ readSensorCurrentRegisterINA219()
 		// }
 		// fclose(fp);
 	}
-	fclose(fp);
 
 	// SEGGER_RTT_printf(0, "\r\nI2C_DRV_MasterReceiveData returned [%d]\n", status);
 
