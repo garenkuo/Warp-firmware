@@ -423,13 +423,13 @@ readSensorCurrentRegisterINA219()
     cmdBuf[0] = 0x00;
 
     status = I2C_DRV_MasterSendDataBlocking(
-                                                  0,  /* I2C peripheral instance */,
-                                                  &slave,
-                                                  cmdBuf,
-                                                  1,
-                                                  payloadBuf,
-                                                  2,    /* number of bytes */
-                                                  100);
+	                                          0,  /* I2C peripheral instance */
+	                                          &slave,
+	                                          cmdBuf,
+	                                          1,
+	                                          payloadBuf,
+	                                          2,    /* number of bytes */
+	                                          100);
 
 	SEGGER_RTT_printf(0, "INA219 Configuration Register Set");
 
