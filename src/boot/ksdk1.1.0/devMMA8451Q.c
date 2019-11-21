@@ -449,7 +449,7 @@ readSensorCurrentRegisterINA219()
   			return kWarpStatusDeviceCommunicationFailed;
   		}
 
-	SEGGER_RTT_printf(0, "INA219 calibration register set");
+	SEGGER_RTT_printf(0, "INA219 calibration register set\n");
 
 	// From datasheet - To change the register pointer for a read operation,
 	// a new value must be written to the register pointer.
@@ -467,14 +467,16 @@ readSensorCurrentRegisterINA219()
 		0,
 		gWarpI2cTimeoutMilliseconds);
 
-	SEGGER_RTT_printf(0, "Reading current 100 times");
+	SEGGER_RTT_printf(0, "Reading current 100 times\n");
 	cmdBuf[0] = 0x04; // Current register
-	SEGGER_RTT_printf(0, "file test");
+
+	SEGGER_RTT_printf(0, "file test1\n");
 	FILE * fp;
-
+	SEGGER_RTT_printf(0, "file test2\n");
 	fp = fopen ("file.txt", "w+");
+	SEGGER_RTT_printf(0, "file test3\n");
 	fprintf(fp, "%s %s %s %d", "We", "are", "in", 2012);
-
+	SEGGER_RTT_printf(0, "file test4\n");
 	fclose(fp);
 	SEGGER_RTT_printf(0, "file.txt created!");
 	for(int i = 0; i < 20; i++){
