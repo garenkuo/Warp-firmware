@@ -482,7 +482,7 @@ readSensorCurrentRegisterINA219()
 
 	if (status == kStatus_I2C_Success)
 	{
-		SEGGER_RTT_printf(0, "success")
+		SEGGER_RTT_printf(0, "success");
 		SEGGER_RTT_printf(0, "\r[0x%02x]	0x%02x\n", cmdBuf[0], deviceINA219State.i2cBuffer[0]);
 	}
 	else
