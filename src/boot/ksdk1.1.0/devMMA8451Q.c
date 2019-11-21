@@ -469,14 +469,6 @@ readSensorCurrentRegisterINA219()
 
 	SEGGER_RTT_printf(0, "Reading current 100 times");
 	cmdBuf[0] = 0x04; // Current register
-	SEGGER_RTT_printf("file creation test")
-	FILE * fp;
-
-    fp = fopen ("file.txt", "w+");
-    fprintf(fp, "%s %s %s %d", "We", "are", "in", 2012);
-
-    fclose(fp);
-	SEGGER_RTT_printf("file.txt created!")
 	for(int i = 0; i < 20; i++){
     	status = I2C_DRV_MasterReceiveDataBlocking(
 			0 /* I2C peripheral instance */,
@@ -489,7 +481,37 @@ readSensorCurrentRegisterINA219()
 		currentDecimal = ((deviceINA219State.i2cBuffer[0] << 8) | (deviceINA219State.i2cBuffer[1]))/10;
 		SEGGER_RTT_printf(0, "\n\r %02x%02x", deviceINA219State.i2cBuffer[0], deviceINA219State.i2cBuffer[1]);
 		SEGGER_RTT_printf(0, "\n\r %d", currentDecimal);
+
+		// FILE *fp;
+		// int i, count, id, micro, dcn, ds, rd;
+		//
+		// printf("\n Creating %s.csv file",filename);
+		// filename=strcat(filename,".csv");
+		//
+		// fp=fopen(filename,"w+");
+		//
+		// fprintf(fp,"Student Id, Microprocessor, RDMBMS, DCN, DS");
+		// printf("How many student's marks do you want to save?");
+		// scanf("%d", &count);
+		//
+		// for(i = 1; i <= count; i++){
+		// fprintf(fp,"\n%d,%d,%d,%d,%d",id,micro,rd,dcn,ds);
+		// }
+		// fclose(fp);
 	}
+
+	// SEGGER_RTT_printf(0, "\r\nI2C_DRV_MasterReceiveData returned [%d]\n", status);
+
+	if (status == kStatus_I2C_Success)
+	{
+		SEGGER_RTT_printf(0, "success");
+		SEGGER_RTT_printf(0, "\r[0x%02x]	0x%02x\n", cmdBuf[0], deviceINA219State.i2cBuffer[0]);
+	}
+	else
+	{
+		return kWarpStatusDeviceCommunicationFailed;
+	}
+
 
 	return kWarpStatusOK;
 }
