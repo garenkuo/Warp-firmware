@@ -436,10 +436,10 @@ readSensorCurrentRegisterINA219()
 	// Set calibration register
 	cmdBuf[0] = 0x05;
 
-	paylodBuf[0] = 0xC8;
+	payloadBuf[0] = 0xC8;
 	payloadBuf[1] = 0x00;
 
-	returnValue = I2C_DRV_MasterSendDataBlocking(
+	status = I2C_DRV_MasterSendDataBlocking(
                                                       0 /* I2C peripheral instance */,
                                                       &slave,
                                                       cmdBuf,
