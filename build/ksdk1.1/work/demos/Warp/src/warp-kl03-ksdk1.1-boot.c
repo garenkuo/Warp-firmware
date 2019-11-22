@@ -1027,7 +1027,7 @@ readSensorCurrentRegisterINA219()
     uint8_t 		payloadBuf[2];
 	uint8_t 		cmdBuf[1];
 	i2c_status_t	status;
-	int16_t		 	currentDecimal;
+	int16_t		 	current_mA;
 
 	i2c_device_t slave =
 	{
@@ -1080,34 +1080,26 @@ readSensorCurrentRegisterINA219()
 
 	SEGGER_RTT_printf(0, "INA219 calibration register set\n");
 
-	// From datasheet - To change the register pointer for a read operation,
-	// a new value must be written to the register pointer.
-	// cmdBuf[0] = 0x04; // Current register
-	//
-	// payloadBuf[0] = 0x01;
-	// payloadBuf[1] = 0x01;
-	//
-	// status = I2C_DRV_MasterSendDataBlocking(
-	// 	0,
-	// 	&slave,
-	// 	cmdBuf,
-	// 	1,
-	// 	payloadBuf,
-	// 	0,
-	// 	gWarpI2cTimeoutMilliseconds);
+	/* From datasheet - To change the register pointer for a read operation,
+	   a new value must be written to the register pointer. */
 
-	SEGGER_RTT_printf(0, "Reading current 100 times\n");
+	cmdBuf[0] = 0x04; /** current register */
+
+	payloadBuf[0] = 0x00;
+	payloadBuf[1] = 0x00;
+
+	status = I2C_DRV_MasterSendDataBlocking(
+		0,
+		&slave,
+		cmdBuf,
+		1,
+		payloadBuf,
+		0,
+		gWarpI2cTimeoutMilliseconds);
+
+	SEGGER_RTT_printf(0, "Reading current 1000 times\n");
 	cmdBuf[0] = 0x04; // Current register
-	//
-	// SEGGER_RTT_printf(0, "file test1\n");
-	// FILE * fp;
-	// SEGGER_RTT_printf(0, "file test2\n");
-	// fp = fopen ("file.txt", "w+");
-	// SEGGER_RTT_printf(0, "file test3\n");
-	// fprintf(fp, "%s %s %s %d", "We", "are", "in", 2012);
-	// SEGGER_RTT_printf(0, "file test4\n");
-	// fclose(fp);
-	// SEGGER_RTT_printf(0, "file.txt created!");
+
 	for(int i = 0; i < 1000; i++){
     	status = I2C_DRV_MasterReceiveDataBlocking(
 			0 /* I2C peripheral instance */,
@@ -1117,33 +1109,15 @@ readSensorCurrentRegisterINA219()
 			(uint8_t *)deviceINA219State.i2cBuffer,
 			2, /* number of bytes */
 			500 /* timeout in milliseconds */);
-		currentDecimal = ((deviceINA219State.i2cBuffer[0] << 8) | (deviceINA219State.i2cBuffer[1]))/10;
-		// SEGGER_RTT_printf(0, "\n\r %02x%02x", deviceINA219State.i2cBuffer[0], deviceINA219State.i2cBuffer[1]);
-		SEGGER_RTT_printf(0, "\n\r %d", currentDecimal);
+		current_mA = ((deviceINA219State.i2cBuffer[0] << 8) | (deviceINA219State.i2cBuffer[1])) / 10;
+		SEGGER_RTT_printf(0, "\n\r %d", current_mA);
 
-		// FILE *fp;
-		// int i, count, id, micro, dcn, ds, rd;
-		//
-		// printf("\n Creating %s.csv file",filename);
-		// filename=strcat(filename,".csv");
-		//
-		// fp=fopen(filename,"w+");
-		//
-		// fprintf(fp,"Student Id, Microprocessor, RDMBMS, DCN, DS");
-		// printf("How many student's marks do you want to save?");
-		// scanf("%d", &count);
-		//
-		// for(i = 1; i <= count; i++){
-		// fprintf(fp,"\n%d,%d,%d,%d,%d",id,micro,rd,dcn,ds);
-		// }
-		// fclose(fp);
 	}
 
 	// SEGGER_RTT_printf(0, "\r\nI2C_DRV_MasterReceiveData returned [%d]\n", status);
 
 	if (status == kStatus_I2C_Success)
 	{
-		SEGGER_RTT_printf(0, "success");
 		SEGGER_RTT_printf(0, "\r[0x%02x]	0x%02x\n", cmdBuf[0], deviceINA219State.i2cBuffer[0]);
 	}
 	else
@@ -1484,12 +1458,17 @@ main(void)
 	 */
 #endif
 
-	devSSD1331init();
 	/* Code for Coursework 4 */
 
+	// turn on the display
+	devSSD1331init();
+
+	// initialize current sensor
 	initINA219(0x40 /* i2cAddress */,	&deviceINA219State );
+
+	// read current register from sensor 1000 times and print
 	enableI2Cpins(menuI2cPullupValue);
-	WarpStatus newvar1 = readSensorCurrentRegisterINA219();
+	readSensorCurrentRegisterINA219();
 	disableI2Cpins();
 
 	while (1)
