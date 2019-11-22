@@ -112,10 +112,6 @@ volatile WarpI2CDeviceState			deviceBMX055magState;
 volatile WarpI2CDeviceState			deviceMMA8451QState;
 #endif
 
-#ifdef WARP_BUILD_ENABLE_DEVINA219
-volatile WarpI2CDeviceState			deviceINA219State;
-#endif
-
 #ifdef WARP_BUILD_ENABLE_DEVLPS25H
 volatile WarpI2CDeviceState			deviceLPS25HState;
 #endif
@@ -1015,6 +1011,147 @@ checkSum(uint8_t *  pointer, uint16_t length) /*	Adapted from https://stackoverf
 }
 #endif
 
+/* Code for Coursework 4 */
+
+void
+initINA219(const uint8_t i2cAddress, WarpI2CDeviceState volatile *  deviceStatePointer)
+{
+	deviceStatePointer->i2cAddress	= i2cAddress;
+	return;
+}
+
+WarpStatus
+readSensorCurrentRegisterINA219()
+{
+    uint8_t 		payloadBuf[2] = {0xFF, 0xFF};
+	uint8_t 		cmdBuf[1];
+	i2c_status_t	status;
+	int16_t		 	currentDecimal;
+
+	i2c_device_t slave =
+	{
+		.address = deviceINA219State.i2cAddress,
+		.baudRate_kbps = gWarpI2cBaudRateKbps
+	};
+
+	/* configure device */
+
+	payloadBuf[0] = 0xFF;
+    payloadBuf[1] = 0xFF;
+    cmdBuf[0] = 0x00;
+
+    status = I2C_DRV_MasterSendDataBlocking(
+          0,  /* I2C peripheral instance */
+          &slave,
+          cmdBuf,
+          1,
+          payloadBuf,
+          2,    /* number of bytes */
+          gWarpI2cTimeoutMilliseconds);
+	if (status != kStatus_I2C_Success)
+	{
+		return kWarpStatusDeviceCommunicationFailed;
+	}
+	SEGGER_RTT_printf(0, "INA219 Configuration Register Set");
+
+	/* set calibration register before each read */
+	cmdBuf[0] = 0x05;
+
+	/* 4096 */
+	payloadBuf[0] = 0x10;
+	payloadBuf[1] = 0x00;
+
+	status = I2C_DRV_MasterSendDataBlocking(
+          0 /* I2C peripheral instance */,
+          &slave,
+          cmdBuf,
+          1,
+          payloadBuf,
+          2,
+          gWarpI2cTimeoutMilliseconds);
+
+	if (status != kStatus_I2C_Success)
+  		{
+  			return kWarpStatusDeviceCommunicationFailed;
+  		}
+
+	SEGGER_RTT_printf(0, "INA219 calibration register set\n");
+
+	// From datasheet - To change the register pointer for a read operation,
+	// a new value must be written to the register pointer.
+	cmdBuf[0] = 0x04; // Current register
+
+	payloadBuf[0] = 0x01;
+	payloadBuf[1] = 0x01;
+
+	status = I2C_DRV_MasterSendDataBlocking(
+		0,
+		&slave,
+		cmdBuf,
+		1,
+		payloadBuf,
+		0,
+		gWarpI2cTimeoutMilliseconds);
+
+	SEGGER_RTT_printf(0, "Reading current 100 times\n");
+	cmdBuf[0] = 0x04; // Current register
+	//
+	// SEGGER_RTT_printf(0, "file test1\n");
+	// FILE * fp;
+	// SEGGER_RTT_printf(0, "file test2\n");
+	// fp = fopen ("file.txt", "w+");
+	// SEGGER_RTT_printf(0, "file test3\n");
+	// fprintf(fp, "%s %s %s %d", "We", "are", "in", 2012);
+	// SEGGER_RTT_printf(0, "file test4\n");
+	// fclose(fp);
+	// SEGGER_RTT_printf(0, "file.txt created!");
+	for(int i = 0; i < 1000; i++){
+    	status = I2C_DRV_MasterReceiveDataBlocking(
+			0 /* I2C peripheral instance */,
+			&slave,
+			NULL,
+			0,
+			(uint8_t *)deviceINA219State.i2cBuffer,
+			2, /* number of bytes */
+			500 /* timeout in milliseconds */);
+		currentDecimal = ((deviceINA219State.i2cBuffer[0] << 8) | (deviceINA219State.i2cBuffer[1]))/10;
+		// SEGGER_RTT_printf(0, "\n\r %02x%02x", deviceINA219State.i2cBuffer[0], deviceINA219State.i2cBuffer[1]);
+		SEGGER_RTT_printf(0, "\n\r %d", currentDecimal);
+
+		// FILE *fp;
+		// int i, count, id, micro, dcn, ds, rd;
+		//
+		// printf("\n Creating %s.csv file",filename);
+		// filename=strcat(filename,".csv");
+		//
+		// fp=fopen(filename,"w+");
+		//
+		// fprintf(fp,"Student Id, Microprocessor, RDMBMS, DCN, DS");
+		// printf("How many student's marks do you want to save?");
+		// scanf("%d", &count);
+		//
+		// for(i = 1; i <= count; i++){
+		// fprintf(fp,"\n%d,%d,%d,%d,%d",id,micro,rd,dcn,ds);
+		// }
+		// fclose(fp);
+	}
+
+	// SEGGER_RTT_printf(0, "\r\nI2C_DRV_MasterReceiveData returned [%d]\n", status);
+
+	if (status == kStatus_I2C_Success)
+	{
+		SEGGER_RTT_printf(0, "success");
+		SEGGER_RTT_printf(0, "\r[0x%02x]	0x%02x\n", cmdBuf[0], deviceINA219State.i2cBuffer[0]);
+	}
+	else
+	{
+		return kWarpStatusDeviceCommunicationFailed;
+	}
+
+
+	return kWarpStatusOK;
+}
+
 int
 main(void)
 {
@@ -1243,10 +1380,6 @@ main(void)
 	initMMA8451Q(	0x1D	/* i2cAddress */,	&deviceMMA8451QState	);
 #endif
 
-#ifdef WARP_BUILD_ENABLE_DEVINA219
-	initINA219(0x40 /* i2cAddress */,	&deviceINA219State );
-#endif
-
 #ifdef WARP_BUILD_ENABLE_DEVLPS25H
 	initLPS25H(	0x5C	/* i2cAddress */,	&deviceLPS25HState	);
 #endif
@@ -1349,7 +1482,9 @@ main(void)
 #endif
 
 	devSSD1331init();
-	/* Start reading current */
+	/* Code for Coursework 4 */
+	volatile WarpI2CDeviceState	deviceINA219State;
+	initINA219(0x40 /* i2cAddress */,	&deviceINA219State );
 	enableI2Cpins(menuI2cPullupValue);
 	WarpStatus newvar1 = readSensorCurrentRegisterINA219();
 	disableI2Cpins();
