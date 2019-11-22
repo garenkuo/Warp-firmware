@@ -1012,6 +1012,7 @@ checkSum(uint8_t *  pointer, uint16_t length) /*	Adapted from https://stackoverf
 #endif
 
 /* Code for Coursework 4 */
+volatile WarpI2CDeviceState	deviceINA219State;
 
 void
 initINA219(const uint8_t i2cAddress, WarpI2CDeviceState volatile *  deviceStatePointer)
@@ -1483,7 +1484,7 @@ main(void)
 
 	devSSD1331init();
 	/* Code for Coursework 4 */
-	volatile WarpI2CDeviceState	deviceINA219State;
+
 	initINA219(0x40 /* i2cAddress */,	&deviceINA219State );
 	enableI2Cpins(menuI2cPullupValue);
 	WarpStatus newvar1 = readSensorCurrentRegisterINA219();
