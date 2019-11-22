@@ -1038,8 +1038,9 @@ readSensorCurrentRegisterINA219()
 	/* configure device */
 	cmdBuf[0] = 0x00; // configuration register
 
-	payloadBuf[0] = 0xFF;
-    payloadBuf[1] = 0xFF;
+	// power-on reset value
+	payloadBuf[0] = 0x39;
+    payloadBuf[1] = 0x9F;
 
     status = I2C_DRV_MasterSendDataBlocking(
           0,  // I2C peripheral instance
@@ -1460,6 +1461,7 @@ main(void)
 	enableI2Cpins(menuI2cPullupValue);
 	readSensorCurrentRegisterINA219();
 	disableI2Cpins();
+	// terminal output is then copy/pasted into a csv file included in submission
 
 	while (1)
 	{
