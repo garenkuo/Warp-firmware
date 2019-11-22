@@ -1085,9 +1085,6 @@ readSensorCurrentRegisterINA219()
 
 	cmdBuf[0] = 0x04; /** current register */
 
-	payloadBuf[0] = 0x00;
-	payloadBuf[1] = 0x00;
-
 	status = I2C_DRV_MasterSendDataBlocking(
 		0,
 		&slave,
@@ -1097,6 +1094,7 @@ readSensorCurrentRegisterINA219()
 		0,
 		gWarpI2cTimeoutMilliseconds);
 
+	/* now we can read from the current register */
 	SEGGER_RTT_printf(0, "Reading current 1000 times\n");
 	cmdBuf[0] = 0x04; // Current register
 
@@ -1109,22 +1107,17 @@ readSensorCurrentRegisterINA219()
 			(uint8_t *)deviceINA219State.i2cBuffer,
 			2, /* number of bytes */
 			500 /* timeout in milliseconds */);
+
+		/* convert to mA, calibration value gives 100 microamps per bit */
 		current_mA = ((deviceINA219State.i2cBuffer[0] << 8) | (deviceINA219State.i2cBuffer[1])) / 10;
 		SEGGER_RTT_printf(0, "\n\r %d", current_mA);
 
 	}
 
-	// SEGGER_RTT_printf(0, "\r\nI2C_DRV_MasterReceiveData returned [%d]\n", status);
-
-	if (status == kStatus_I2C_Success)
-	{
-		SEGGER_RTT_printf(0, "\r[0x%02x]	0x%02x\n", cmdBuf[0], deviceINA219State.i2cBuffer[0]);
-	}
-	else
+	if (status != kStatus_I2C_Success)
 	{
 		return kWarpStatusDeviceCommunicationFailed;
 	}
-
 
 	return kWarpStatusOK;
 }
