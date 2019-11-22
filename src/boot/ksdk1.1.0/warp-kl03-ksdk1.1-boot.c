@@ -1027,7 +1027,7 @@ readSensorCurrentRegisterINA219()
     uint8_t 		payloadBuf[2];
 	uint8_t 		cmdBuf[1];
 	i2c_status_t	status;
-	int16_t		 	currentCombined;
+	int16_t		 	currentDecimal;
 
 	i2c_device_t slave =
 	{
