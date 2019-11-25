@@ -320,7 +320,7 @@ getSensorXMMA8451Q(bool hexModeFlag)
 	 *	Sign extend the 14-bit value based on knowledge that upper 2 bit are 0:
 	 */
 	readSensorRegisterValueCombined = (readSensorRegisterValueCombined ^ (1 << 13)) - (1 << 13);
-	return readSensorRegisterValueCombined
+	return readSensorRegisterValueCombined;
 }
 
 void
@@ -340,7 +340,7 @@ getSensorYMMA8451Q(bool hexModeFlag)
 	 *	Sign extend the 14-bit value based on knowledge that upper 2 bit are 0:
 	 */
 	readSensorRegisterValueCombined = (readSensorRegisterValueCombined ^ (1 << 13)) - (1 << 13);
-	return readSensorRegisterValueCombined
+	return readSensorRegisterValueCombined;
 }
 
 void
@@ -360,5 +360,5 @@ getSensorZMMA8451Q(bool hexModeFlag)
 	 *	Sign extend the 14-bit value based on knowledge that upper 2 bit are 0:
 	 */
 	readSensorRegisterValueCombined = (readSensorRegisterValueCombined ^ (1 << 13)) - (1 << 13);
-	return readSensorRegisterValueCombined
+	return readSensorRegisterValueCombined;
 }
