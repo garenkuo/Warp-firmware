@@ -1036,7 +1036,7 @@ readSensorCurrentRegisterINA219()
 	};
 
 	/* configure device */
-	cmdBuf[0] = 0x00; // configuration register
+	cmdBuf[0] = 0x00; // configuration register address
 
 	// power-on reset value
 	payloadBuf[0] = 0x39;
@@ -1057,7 +1057,7 @@ readSensorCurrentRegisterINA219()
 	}
 
 	/* set calibration register */
-	cmdBuf[0] = 0x05; // calibration register
+	cmdBuf[0] = 0x05; // calibration register address
 
 	// calibration value 4096 from example in datasheet
 	payloadBuf[0] = 0x10;
@@ -1080,7 +1080,7 @@ readSensorCurrentRegisterINA219()
 	/* From datasheet - To change the register pointer for a read operation,
 	   a new value must be written to the register pointer. */
 
-	cmdBuf[0] = 0x04; // current register
+	cmdBuf[0] = 0x04; // current register address
 
 	status = I2C_DRV_MasterSendDataBlocking(
 		0, // I2C peripheral instance
@@ -1094,7 +1094,7 @@ readSensorCurrentRegisterINA219()
 	/* now we can read from the current register */
 	SEGGER_RTT_printf(0, "Current is given as an integer in mA");
 
-	cmdBuf[0] = 0x04; // current register
+	cmdBuf[0] = 0x04; // current register address
 
 	for(int i = 0; i < 1000; i++){
     	status = I2C_DRV_MasterReceiveDataBlocking(
@@ -1449,19 +1449,27 @@ main(void)
 	 */
 #endif
 
-	/* Code for Coursework 4 */
+	// /* Code for Coursework 4 */
+	//
+	// // turn on the display
+	// devSSD1331init();
+	//
+	// // initialize current sensor
+	// initINA219(0x40 /* i2cAddress */,	&deviceINA219State );
+	//
+	// // read current register from sensor 1000 times and print
+	// enableI2Cpins(menuI2cPullupValue);
+	// readSensorCurrentRegisterINA219();
+	// disableI2Cpins();
+	// // terminal output is then copy/pasted into a csv file included in submission
 
-	// turn on the display
-	devSSD1331init();
-
-	// initialize current sensor
-	initINA219(0x40 /* i2cAddress */,	&deviceINA219State );
-
-	// read current register from sensor 1000 times and print
+	/* For reading and storing MMA8451Q data */
 	enableI2Cpins(menuI2cPullupValue);
-	readSensorCurrentRegisterINA219();
+	for (int i=0;i<100;i++){
+		printSensorDataMMA8451Q(false);
+		OSA_TimeDelay(1000);
+	}
 	disableI2Cpins();
-	// terminal output is then copy/pasted into a csv file included in submission
 
 	while (1)
 	{
