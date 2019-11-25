@@ -1465,8 +1465,9 @@ main(void)
 
 	/* For reading and storing MMA8451Q data */
 	enableI2Cpins(menuI2cPullupValue);
-	for (i=0;i<100;i++){
+	for (int i=0;i<100;i++){
 		printSensorDataMMA8451Q(false);
+		OSA_TimeDelay(1000);
 	}
 	disableI2Cpins();
 
