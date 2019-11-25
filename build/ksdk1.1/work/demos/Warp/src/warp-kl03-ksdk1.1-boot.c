@@ -1462,8 +1462,8 @@ main(void)
 	// readSensorCurrentRegisterINA219();
 	// disableI2Cpins();
 	// // terminal output is then copy/pasted into a csv file included in submission
-
-	/* For reading and storing MMA8451Q data */
+	int16_t	accelData[10][3];
+	/* CW 5 */
 	enableI2Cpins(menuI2cPullupValue);
 	for (int i=0;i<10;i++){
 		configureSensorMMA8451Q(0x00,/* Payload: Disable FIFO */

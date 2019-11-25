@@ -219,6 +219,12 @@ Discarded input sections
  .bss           0x0000000000000000        0x0 CMakeFiles/Warp.dir/home/kg472/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
  .text.writeSensorRegisterMMA8451Q
                 0x0000000000000000       0x46 CMakeFiles/Warp.dir/home/kg472/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
+ .text.getSensorXMMA8451Q
+                0x0000000000000000       0x18 CMakeFiles/Warp.dir/home/kg472/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
+ .text.getSensorYMMA8451Q
+                0x0000000000000000       0x18 CMakeFiles/Warp.dir/home/kg472/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
+ .text.getSensorZMMA8451Q
+                0x0000000000000000       0x18 CMakeFiles/Warp.dir/home/kg472/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devMMA8451Q.c.obj
  .text          0x0000000000000000        0x0 CMakeFiles/Warp.dir/home/kg472/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.obj
  .data          0x0000000000000000        0x0 CMakeFiles/Warp.dir/home/kg472/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.obj
  .bss           0x0000000000000000        0x0 CMakeFiles/Warp.dir/home/kg472/Warp-firmware/build/ksdk1.1/work/demos/Warp/src/devHDC1000.c.obj
