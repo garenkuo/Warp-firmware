@@ -303,7 +303,7 @@ printSensorDataMMA8451Q(bool hexModeFlag)
 }
 
 /* modified print function */
-void
+int16_t
 getSensorXMMA8451Q(bool hexModeFlag)
 {
 	uint16_t	readSensorRegisterValueLSB;
@@ -324,7 +324,7 @@ getSensorXMMA8451Q(bool hexModeFlag)
 	return readSensorRegisterValueCombined;
 }
 
-void
+int16_t
 getSensorYMMA8451Q(bool hexModeFlag)
 {
 	uint16_t	readSensorRegisterValueLSB;
@@ -344,7 +344,7 @@ getSensorYMMA8451Q(bool hexModeFlag)
 	return readSensorRegisterValueCombined;
 }
 
-void
+int16_t
 getSensorZMMA8451Q(bool hexModeFlag)
 {
 	uint16_t	readSensorRegisterValueLSB;
