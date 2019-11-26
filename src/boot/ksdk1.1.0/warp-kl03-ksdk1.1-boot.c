@@ -1465,11 +1465,11 @@ main(void)
 	int16_t	accelData[10][3];
 	/* CW 5 */
 	enableI2Cpins(menuI2cPullupValue);
+	configureSensorMMA8451Q(0x00,/* Payload: Disable FIFO */
+					0x01,/* Normal read 8bit, 800Hz, normal, active mode */
+					menuI2cPullupValue
+					);
 	for (int i=0;i<10;i++){
-		configureSensorMMA8451Q(0x00,/* Payload: Disable FIFO */
-						0x01,/* Normal read 8bit, 800Hz, normal, active mode */
-						menuI2cPullupValue
-						);
 		printSensorDataMMA8451Q(false);
 		OSA_TimeDelay(1000);
 	}
