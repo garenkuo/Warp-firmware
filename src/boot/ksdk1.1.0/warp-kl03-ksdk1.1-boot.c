@@ -1469,7 +1469,7 @@ main(void)
 					0x01,/* Normal read 8bit, 800Hz, normal, active mode */
 					menuI2cPullupValue
 					);
-	/* fill initial values */
+	// fill initial values
 	for (int i=0;i<100;i++){
 		accelData[i][0] = getSensorXMMA8451Q(false);
 		accelData[i][1] = getSensorYMMA8451Q(false);
@@ -1477,9 +1477,15 @@ main(void)
 		// printSensorDataMMA8451Q(false);
 		OSA_TimeDelay(100);
 	}
-	while (1) {
 
-	}
+
+
+	// // while running, keep populating accelData while also condition checking for signals
+	// while (1) {
+	// 	// if stop then ...
+	//
+	// 	// if turn then ...
+	// }
 	SEGGER_RTT_printf(0, "It worked?? %d", accelData[99][0]);
 	disableI2Cpins();
 
