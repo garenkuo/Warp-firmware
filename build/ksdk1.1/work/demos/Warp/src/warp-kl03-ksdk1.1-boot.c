@@ -1470,9 +1470,13 @@ main(void)
 					menuI2cPullupValue
 					);
 	for (int i=0;i<10;i++){
-		printSensorDataMMA8451Q(false);
-		OSA_TimeDelay(1000);
+		accelData[i][0] = getSensorXMMA8451Q(false);
+		accelData[i][1] = getSensorYMMA8451Q(false);
+		accelData[i][2] = getSensorZMMA8451Q(false);
+		// printSensorDataMMA8451Q(false);
+		OSA_TimeDelay(100);
 	}
+	SEGGER_RTT_printf(0, "It worked?? %d", accelData[5][0]);
 	disableI2Cpins();
 
 	while (1)
