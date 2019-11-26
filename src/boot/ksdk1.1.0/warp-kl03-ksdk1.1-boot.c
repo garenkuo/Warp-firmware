@@ -1486,7 +1486,6 @@ main(void)
 	//
 	// 	// if turn then ...
 	// }
-	SEGGER_RTT_printf(0, "It worked?? %d", accelData[99][0]);
 	disableI2Cpins();
 
 // 	while (1)
