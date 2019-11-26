@@ -320,6 +320,7 @@ getSensorXMMA8451Q(bool hexModeFlag)
 	 *	Sign extend the 14-bit value based on knowledge that upper 2 bit are 0:
 	 */
 	readSensorRegisterValueCombined = (readSensorRegisterValueCombined ^ (1 << 13)) - (1 << 13);
+	SEGGER_RTT_printf(0, "before return %d,\n", readSensorRegisterValueCombined);
 	return readSensorRegisterValueCombined;
 }
 
