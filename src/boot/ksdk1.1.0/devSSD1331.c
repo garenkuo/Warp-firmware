@@ -156,7 +156,12 @@ devSSD1331init(void)
 	 *	Any post-initialization drawing commands go here.
 	 */
 	//...
+	return 0;
+}
 
+int
+devSSD1331turnFlash(void) {
+	// flash once?
 	writeCommand(kSSD1331CommandDRAWRECT);
 	// start row, col
 	writeCommand(0x0);
@@ -173,6 +178,46 @@ devSSD1331init(void)
 	writeCommand(0xff);
 	writeCommand(0x0);
 
+	OSA_TimeDelay(500);
 
+	devSSD1331clear();
+
+	return 0;
+	// delay
+}
+
+int devSSD1331stop(void) {
+	// flash red for 5 seconds
+	writeCommand(kSSD1331CommandDRAWRECT);
+	// start row, col
+	writeCommand(0x0);
+	writeCommand(0x0);
+	// end row, col
+	writeCommand(0x5f);
+	writeCommand(0x3f);
+	// color of line
+	writeCommand(0xff);
+	writeCommand(0x0);
+	writeCommand(0x0);
+	// color of fill
+	writeCommand(0xff);
+	writeCommand(0x0);
+	writeCommand(0x0);
+
+	OSA_TimeDelay(5000);
+
+	devSSD1331clear();
+	return 0;
+}
+
+int devSSD1331clear(void) {
+	/*
+	 *	Clear Screen
+	 */
+	writeCommand(kSSD1331CommandCLEAR);
+	writeCommand(0x00);
+	writeCommand(0x00);
+	writeCommand(0x5F);
+	writeCommand(0x3F);
 	return 0;
 }

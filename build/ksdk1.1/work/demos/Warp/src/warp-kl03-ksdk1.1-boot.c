@@ -1462,30 +1462,95 @@ main(void)
 	// readSensorCurrentRegisterINA219();
 	// disableI2Cpins();
 	// // terminal output is then copy/pasted into a csv file included in submission
-	int16_t	accelData[100][3];
+
+	int size = 10;
+
+	int16_t	accelData[size][3];
 	/* CW 5 */
 	enableI2Cpins(menuI2cPullupValue);
 	configureSensorMMA8451Q(0x00,/* Payload: Disable FIFO */
 					0x01,/* Normal read 8bit, 800Hz, normal, active mode */
 					menuI2cPullupValue
 					);
+	// initial display
+	devSSD1331init();
+	SEGGER_RTT_printf(0, "display initalized\n");
+	// delay to let user set device on handlebar
 	// fill initial values
-	for (int i=0;i<100;i++){
+	int16_t sumX, sumY, sumZ;
+	//int16_t startY =
+	//int16_t startZ =
+	for (int i=0;i<size;i++){
 		accelData[i][0] = getSensorXMMA8451Q(false);
+		sumX += accelData[i][0];
 		accelData[i][1] = getSensorYMMA8451Q(false);
+		sumY += accelData[i][1];
 		accelData[i][2] = getSensorZMMA8451Q(false);
+		sumZ += accelData[i][2];
 		// printSensorDataMMA8451Q(false);
 		OSA_TimeDelay(100);
 	}
 
+	SEGGER_RTT_printf(0, "device initialized, x %d, y %d, z %d\n", sumX, sumY, sumZ);
+	int ptr = 0;
+	int16_t delX, delY, delZ, currX, currY, currZ;
+	int changeCtr = 1;
+	while (1) {
+		currX = getSensorXMMA8451Q(false);
+		currY = getSensorYMMA8451Q(false);
+		currZ = getSensorZMMA8451Q(false);
+		// i think checking stop is more restrictive
+		// currX = getSensorXMMA8451Q(false); // average of last .5 seconds?
+		delX = abs(currX - (sumX / size));
+		delY = abs(currY - (sumY / size));
+		delZ = abs(currZ - (sumZ / size));
+		if ((delX > 500 && delY > 500) || (delX > 500 && delZ > 500) || (delY > 500 && delZ > 500)) {
+			if (changeCtr < 5) {
 
+				SEGGER_RTT_printf(0, "FLASH delX %d delY %d delZ %d \n", delX, delY, delZ);
+				SEGGER_RTT_printf(0, "sumX %d sumY %d sumZ %d\n", sumX, sumY, sumZ);
+				SEGGER_RTT_printf(0, "currX %d currY %d currZ %d \n", currX, currY, currZ);
+				changeCtr += 1;
+				OSA_TimeDelay(100);
+			}
+			else {
+				for (int i = 0; i <4; i++) {
+					devSSD1331turnFlash();
+				}
+				changeCtr = 0;
+				sumX = sumY = sumZ = 0;
+				for (int i=0;i<size;i++){
+					accelData[i][0] = getSensorXMMA8451Q(false);
+					sumX += accelData[i][0];
+					accelData[i][1] = getSensorYMMA8451Q(false);
+					sumY += accelData[i][1];
+					accelData[i][2] = getSensorZMMA8451Q(false);
+					sumZ += accelData[i][2];
+					// printSensorDataMMA8451Q(false);
+					OSA_TimeDelay(100);
+				}
+			}
+		}
+		else {
+			changeCtr = 0;
+			accelData[ptr][0] = currX;
+			sumX += currX;
+			accelData[ptr][1] = currY;
+			sumY += currY;
+			accelData[ptr][2] = currZ;
+			sumZ += currZ;
 
-	// // while running, keep populating accelData while also condition checking for signals
-	// while (1) {
-	// 	// if stop then ...
-	//
-	// 	// if turn then ...
-	// }
+			ptr = (ptr + 1) % size;
+
+			// get rid of
+			sumX = sumX - accelData[ptr][0];
+			sumY = sumY - accelData[ptr][1];
+			sumZ = sumZ - accelData[ptr][2];
+		}
+		OSA_TimeDelay(100);
+
+	}
+	// need a reset button
 	disableI2Cpins();
 
 // 	while (1)
