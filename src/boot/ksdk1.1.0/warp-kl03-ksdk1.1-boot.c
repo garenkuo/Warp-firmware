@@ -1513,9 +1513,6 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag, int menuDelay
 					i2cPullupValue
 					);
 	#endif
-	// #ifdef WARP_BUILD_ENABLE_DEVINA219
-	// numberOfConfigErrors += configureSensorINA219(i2cPullupValue);
-	// #endif
 	#ifdef WARP_BUILD_ENABLE_DEVMAG3110
 	numberOfConfigErrors += configureSensorMAG3110(	0x00,/*	Payload: DR 000, OS 00, 80Hz, ADC 1280, Full 16bit, standby mode to set up register*/
 					0xA0,/*	Payload: AUTO_MRST_EN enable, RAW value without offset */
@@ -1612,10 +1609,6 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag, int menuDelay
 		SEGGER_RTT_WriteString(0, " MMA8451 x, MMA8451 y, MMA8451 z,");
 		OSA_TimeDelay(gWarpMenuPrintDelayMilliseconds);
 		#endif
-		// #ifdef WARP_BUILD_ENABLE_DEVMMA8451Q
-		// SEGGER_RTT_WriteString(0, " INA219 current ");
-		// OSA_TimeDelay(gWarpMenuPrintDelayMilliseconds);
-		// #endif
 		#ifdef WARP_BUILD_ENABLE_DEVMAG3110
 		SEGGER_RTT_WriteString(0, " MAG3110 x, MAG3110 y, MAG3110 z, MAG3110 Temp,");
 		OSA_TimeDelay(gWarpMenuPrintDelayMilliseconds);
@@ -1663,9 +1656,6 @@ printAllSensors(bool printHeadersAndCalibration, bool hexModeFlag, int menuDelay
 		#ifdef WARP_BUILD_ENABLE_DEVMMA8451Q
 		printSensorDataMMA8451Q(hexModeFlag);
 		#endif
-		// #ifdef WARP_BUILD_ENABLE_DEVINA219
-		// printSensorCurrentINA219(hexModeFlag);
-		// #endif
 		#ifdef WARP_BUILD_ENABLE_DEVMAG3110
 		printSensorDataMAG3110(hexModeFlag);
 		#endif
