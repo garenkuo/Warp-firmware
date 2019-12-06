@@ -159,6 +159,7 @@ devSSD1331init(void)
 	return 0;
 }
 
+// left pointing arrow when left arm extended
 int
 devSSD1331LeftTurn(void) {
 	int startCols[6] = {0x0f, 0x32, 0x37, 0x3c, 0x41, 0x46};
@@ -192,13 +193,9 @@ devSSD1331LeftTurn(void) {
 	// delay
 }
 
+// right arrow when left arm pointed upwards
 int
 devSSD1331RightTurn(void) {
-	// int startCols[6] = {37, 27, 32, 37, 42, 46};
-	// int endCols[6] = {57, 67, 62, 57, 52, 47};
-	// int startRows[6] = {4, 34, 39, 44, 49, 54};
-	// int endRows[6] = {34, 39, 44, 49, 54, 59};
-
 	int startCols[6] = {0x25, 0x1b, 0x20, 0x25, 0x2a, 0x2e};
 	int endCols[6] = {0x39, 0x43, 0x3e, 0x39, 0x34, 0x2f};
 	int startRows[6] = {0x04, 0x22, 0x27, 0x2c, 0x31, 0x36};
@@ -222,104 +219,6 @@ devSSD1331RightTurn(void) {
 		writeCommand(0x0);
 	}
 
-	// writeCommand(kSSD1331CommandDRAWRECT);
-	// // start row, col
-	// writeCommand(0x0f);
-	// writeCommand(0x15); // 21
-	// // end row, col
-	// writeCommand(0x32);
-	// writeCommand(0x29); // 41
-	// // color of line
-	// writeCommand(0x0);
-	// writeCommand(0x0);
-	// writeCommand(0xff);
-	// // color of fill
-	// writeCommand(0x0);
-	// writeCommand(0x0);
-	// writeCommand(0xff);
-	//
-	// // triangle 1
-	// writeCommand(kSSD1331CommandDRAWRECT);
-	// // start row, col
-	// writeCommand(0x32);
-	// writeCommand(0x0b); // 11
-	// // end row, col
-	// writeCommand(0x37);
-	// writeCommand(0x33); // 51
-	// // color of line
-	// writeCommand(0x0);
-	// writeCommand(0x0);
-	// writeCommand(0xff);
-	// // color of fill
-	// writeCommand(0x0);
-	// writeCommand(0x0);
-	// writeCommand(0xff);
-	//
-	// // triangle 2
-	// writeCommand(kSSD1331CommandDRAWRECT);
-	// // start row, col
-	// writeCommand(0x37);
-	// writeCommand(0x10); // 16
-	// // end row, col
-	// writeCommand(0x3c);
-	// writeCommand(0x2e); // 46
-	// // color of line
-	// writeCommand(0x0);
-	// writeCommand(0x0);
-	// writeCommand(0xff);
-	// // color of fill
-	// writeCommand(0x0);
-	// writeCommand(0x0);
-	// writeCommand(0xff);
-	//
-	// writeCommand(kSSD1331CommandDRAWRECT);
-	// // start row, col
-	// writeCommand(0x3c);
-	// writeCommand(0x15); // 21
-	// // end row, col
-	// writeCommand(0x41);
-	// writeCommand(0x29); // 41
-	// // color of line
-	// writeCommand(0x0);
-	// writeCommand(0x0);
-	// writeCommand(0xff);
-	// // color of fill
-	// writeCommand(0x0);
-	// writeCommand(0x0);
-	// writeCommand(0xff);
-	//
-	// writeCommand(kSSD1331CommandDRAWRECT);
-	// // start row, col
-	// writeCommand(0x41);
-	// writeCommand(0x1a); // 26
-	// // end row, col
-	// writeCommand(0x46);
-	// writeCommand(0x24); // 36
-	// // color of line
-	// writeCommand(0x0);
-	// writeCommand(0x0);
-	// writeCommand(0xff);
-	// // color of fill
-	// writeCommand(0x0);
-	// writeCommand(0x0);
-	// writeCommand(0xff);
-	//
-	// writeCommand(kSSD1331CommandDRAWRECT);
-	// // start row, col
-	// writeCommand(0x46);
-	// writeCommand(0x1e); // 30
-	// // end row, col
-	// writeCommand(0x4b);
-	// writeCommand(0x20); // 32
-	// // color of line
-	// writeCommand(0x0);
-	// writeCommand(0x0);
-	// writeCommand(0xff);
-	// // color of fill
-	// writeCommand(0x0);
-	// writeCommand(0x0);
-	// writeCommand(0xff);
-
 	OSA_TimeDelay(500);
 
 	devSSD1331clear();
@@ -328,33 +227,20 @@ devSSD1331RightTurn(void) {
 	// delay
 }
 
+// red octagon
 int devSSD1331Stop(void) {
-	// turn this into a for loop motherfucker
-	/* 95 x 63
-        xxxxx    30 x 5  (17 , 16) to (24 , 46)
-			 xxxxxxx   40 x 5  (24 , 11) to (31 , 51)
-			xxxxxxxxx  50 x 5  (31 , 6) to (38 , 56)
-		 xxxxxxxxxxx 60 x 5  (38 , 1) to (44 , 61)
-		 xxxxxxxxxxx 60 x 5  (44 , 1) to (50 , 61)
-		 xxxxxxxxxxx 60 x 5  (50 , 1) to (56 , 61)
-		  xxxxxxxxx  50 x 5  (56 , 6) to (63 , 56)
-			 xxxxxxx   40 x 5  (63 , 11) to (70 , 51)
-			  xxxxx    30 x 5  (70 , 16) to (77 , 46)
-
-	*/
 	int startRows[9] = {0x10, 0x0b, 0x06, 0x01, 0x01, 0x01, 0x06, 0x0b, 0x10};
 	int endRows[9] = {0x2e, 0x33, 0x38, 0x3d, 0x3d, 0x3d, 0x38, 0x33, 0x2e};
 	int startCols[9] = {0x11, 0x18, 0x1f, 0x26, 0x2c, 0x32, 0x38, 0x3f, 0x46};
 	int endCols[9] = {0x18, 0x1f, 0x26, 0x2c, 0x32, 0x38, 0x3f, 0x46, 0x4d};
 
 	for (int i=0; i<9; i++) {
-		// flash red for 5 seconds
 		writeCommand(kSSD1331CommandDRAWRECT);
 		// start row, col
 		writeCommand(startCols[i]);
 		writeCommand(startRows[i]);
 		// end row, col
-		writeCommand(endCols[i]); //
+		writeCommand(endCols[i]);
 		writeCommand(endRows[i]);
 		// color of line
 		writeCommand(0xff);
@@ -373,10 +259,8 @@ int devSSD1331Stop(void) {
 	return 0;
 }
 
+// clear screen
 int devSSD1331clear(void) {
-	/*
-	 *	Clear Screen
-	 */
 	writeCommand(kSSD1331CommandCLEAR);
 	writeCommand(0x00);
 	writeCommand(0x00);

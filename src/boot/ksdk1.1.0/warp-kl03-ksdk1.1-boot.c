@@ -1349,19 +1349,19 @@ main(void)
 	 */
 #endif
 
+	// size of data array
 	int size = 10;
-
+	// array to store accelerometer data
 	int16_t	accelData[size][3];
-	/* CW 5 */
 	enableI2Cpins(menuI2cPullupValue);
 	// configure accelerometer
 	configureSensorMMA8451Q(0x00,/* Payload: Disable FIFO */
 					0x01,/* Normal read 8bit, 800Hz, normal, active mode */
 					menuI2cPullupValue
 					);
-	// initialize display -> start up screen here?
+	// initialize display
 	devSSD1331init();
-	SEGGER_RTT_printf(0, "display initalized\n");
+
 	// delay to let user set device on handlebar
 	OSA_TimeDelay(1000);
 
@@ -1374,35 +1374,37 @@ main(void)
 		sumY += accelData[i][1];
 		accelData[i][2] = getSensorZMMA8451Q(false);
 		sumZ += accelData[i][2];
-		// printSensorDataMMA8451Q(false);
 		OSA_TimeDelay(100);
 	}
 
-	SEGGER_RTT_printf(0, "device initialized, x %d, y %d, z %d\n", sumX, sumY, sumZ);
+	// use circular buffer to continuously store data (since we only care about the mean)
 	int ptr = 0;
 	int16_t delX, delY, delZ, currX, currY, currZ;
 	int changeCtr = 1;
 	while (1) {
+		// read in current data
 		currX = getSensorXMMA8451Q(false);
 		currY = getSensorYMMA8451Q(false);
 		currZ = getSensorZMMA8451Q(false);
 
-	/* COMMENT BARRIER */
+	  // calculate change from reference point, only sign on Y matters
 		delX = abs(currX - (sumX / size));
 		delY = currY - (sumY / size);
 		delZ = abs(currZ - (sumZ / size));
 
-		// turn rotation
+		// left turn change detected
 		if (delX > 2000 && delZ > 2000) {
+			// increment counter
 			if (changeCtr < 5) {
-				SEGGER_RTT_printf(0, "CHANGE FOR TURN");
 				changeCtr += 1;
 				OSA_TimeDelay(100);
 			}
+			// if change has happened for five data points, output left turn signal
 			else {
 				for (int i = 0; i <4; i++) {
 					devSSD1331LeftTurn();
 				}
+				// reset counter and refill the array
 				changeCtr = 0;
 				sumX = sumY = sumZ = 0;
 				for (int i=0;i<size;i++){
@@ -1412,16 +1414,14 @@ main(void)
 					sumY += accelData[i][1];
 					accelData[i][2] = getSensorZMMA8451Q(false);
 					sumZ += accelData[i][2];
-					// printSensorDataMMA8451Q(false);
 					OSA_TimeDelay(100);
 				}
 			}
 		}
 
-		// stop rotation
+		// stop change detected
 		else if (delY > 2000 && delZ > 2000) {
 			if (changeCtr < 5) {
-				SEGGER_RTT_printf(0, "CHANGE FOR STOP");
 				changeCtr += 1;
 				OSA_TimeDelay(100);
 			}
@@ -1436,15 +1436,14 @@ main(void)
 					sumY += accelData[i][1];
 					accelData[i][2] = getSensorZMMA8451Q(false);
 					sumZ += accelData[i][2];
-					// printSensorDataMMA8451Q(false);
 					OSA_TimeDelay(100);
 				}
 			}
 		}
 
+		// right turn detected
 		else if (delY < -2000 && delZ > 2000) {
 			if (changeCtr < 5) {
-				SEGGER_RTT_printf(0, "CHANGE FOR RIGHT TURN");
 				changeCtr += 1;
 				OSA_TimeDelay(100);
 			}
@@ -1460,12 +1459,12 @@ main(void)
 					sumY += accelData[i][1];
 					accelData[i][2] = getSensorZMMA8451Q(false);
 					sumZ += accelData[i][2];
-					// printSensorDataMMA8451Q(false);
 					OSA_TimeDelay(100);
 				}
 			}
 		}
 
+		// otherwise, no change so add the data point to the buffer and update sums
 		else {
 			changeCtr = 0;
 			accelData[ptr][0] = currX;
@@ -1477,33 +1476,14 @@ main(void)
 
 			ptr = (ptr + 1) % size;
 
-			// get rid of
 			sumX = sumX - accelData[ptr][0];
 			sumY = sumY - accelData[ptr][1];
 			sumZ = sumZ - accelData[ptr][2];
 		}
-		/* END COMMENT BARRIER */
 
-		// /* FOR PRINTING CSV FORMAT DATA */
-		// changeCtr = 0;
-		// accelData[ptr][0] = currX;
-		// sumX += currX;
-		// accelData[ptr][1] = currY;
-		// sumY += currY;
-		// accelData[ptr][2] = currZ;
-		// sumZ += currZ;
-		//
-		// ptr = (ptr + 1) % size;
-		//
-		// // get rid of
-		// sumX = sumX - accelData[ptr][0];
-		// sumY = sumY - accelData[ptr][1];
-		// sumZ = sumZ - accelData[ptr][2];
-		// /* FOR PRINTING CSV FORMAT DATA */
 		OSA_TimeDelay(100);
 
 	}
-	// need a reset button
 	disableI2Cpins();
 
 	return 0;
