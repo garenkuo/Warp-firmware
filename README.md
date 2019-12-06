@@ -22,3 +22,6 @@ The following high-level changes were made to the base repository:
 
 For data collection purposes, you can uncomment out the parts that say "print for CSV"
 to print CSV formatted x, y, z accelerometer data to the JLink RTT Client.
+
+to run: ./build.sh
+        /Applications/SEGGER/JLink/JLinkExe -device MKL03Z32XXX4 -if SWD -speed 100000 -CommanderScript ../../tools/scripts/jlink.commands
